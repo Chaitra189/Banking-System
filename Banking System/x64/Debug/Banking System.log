@@ -1,0 +1,3 @@
+﻿  Banking System.cpp
+C:\Users\Admin\source\repos\Banking System\Banking System\Banking System.cpp(24,19): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  Banking System.vcxproj -> C:\Users\Admin\source\repos\Banking System\x64\Debug\Banking System.exe
