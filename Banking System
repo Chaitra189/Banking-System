@@ -1,1 +1,125 @@
-Banking System
+#include <iostream>
+#include <vector>
+#include <string>
+#include <cstdlib>  // for rand(), srand()
+#include <ctime>    // for time()
+
+using namespace std;
+
+struct Account {
+    int accountNumber;
+    string name;
+    double balance;
+    string password;
+};
+
+// Function to generate random 6-digit password
+string generatePassword() {
+    string pwd = "";
+    for (int i = 0; i < 6; i++) {
+        pwd += to_string(rand() % 10); // generates 0–9
+    }
+    return pwd;
+}
+
+// Create new account
+void createAccount(vector<Account> &accounts) {
+    Account acc;
+    cout << "\nEnter Account Number: ";
+    cin >> acc.accountNumber;
+    cout << "Enter Account Holder Name: ";
+    cin.ignore();
+    getline(cin, acc.name);
+    cout << "Enter Initial Balance: ";
+    cin >> acc.balance;
+
+    acc.password = generatePassword();
+    cout << "Account Created Successfully!\n";
+    cout << "Your Password: " << acc.password << "\n";
+
+    accounts.push_back(acc);
+}
+
+// Deposit money
+void depositMoney(vector<Account> &accounts) {
+    int accNum;
+    double amount;
+    cout << "\nEnter Account Number: ";
+    cin >> accNum;
+    for (auto &acc : accounts) {
+        if (acc.accountNumber == accNum) {
+            cout << "Enter Amount to Deposit: ";
+            cin >> amount;
+            acc.balance += amount;
+            cout << "Deposit Successful! New Balance: " << acc.balance << "\n";
+            return;
+        }
+    }
+    cout << "Account not found!\n";
+}
+
+// Withdraw money
+void withdrawMoney(vector<Account> &accounts) {
+    int accNum;
+    double amount;
+    cout << "\nEnter Account Number: ";
+    cin >> accNum;
+    for (auto &acc : accounts) {
+        if (acc.accountNumber == accNum) {
+            cout << "Enter Amount to Withdraw: ";
+            cin >> amount;
+            if (amount <= acc.balance) {
+                acc.balance -= amount;
+                cout << "Withdrawal Successful! New Balance: " << acc.balance << "\n";
+            } else {
+                cout << "Insufficient Balance!\n";
+            }
+            return;
+        }
+    }
+    cout << "Account not found!\n";
+}
+
+// Check balance
+void checkBalance(vector<Account> &accounts) {
+    int accNum;
+    cout << "\nEnter Account Number: ";
+    cin >> accNum;
+    for (auto &acc : accounts) {
+        if (acc.accountNumber == accNum) {
+            cout << "Account Holder: " << acc.name << "\n";
+            cout << "Balance: " << acc.balance << "\n";
+            return;
+        }
+    }
+    cout << "Account not found!\n";
+}
+
+int main() {
+    srand(time(0)); // Seed for random password generation
+    vector<Account> accounts;
+    int choice;
+
+    do {
+        cout << "\n====== Banking System Menu ======\n";
+        cout << "1. Create Account\n";
+        cout << "2. Deposit Money\n";
+        cout << "3. Withdraw Money\n";
+        cout << "4. Check Balance\n";
+        cout << "5. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1: createAccount(accounts); break;
+            case 2: depositMoney(accounts); break;
+            case 3: withdrawMoney(accounts); break;
+            case 4: checkBalance(accounts); break;
+            case 5: cout << "Exiting... Thank you!\n"; break;
+            default: cout << "Invalid choice! Try again.\n";
+        }
+    } while (choice != 5);
+
+    return 0;
+}
+
